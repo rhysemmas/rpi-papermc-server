@@ -1,0 +1,73 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: papermc
+spec:
+  selector:
+    matchLabels:
+      app: papermc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: papermc
+    spec:
+      containers:
+      - image: rhysemmas/papermc:arm32v7
+        imagePullPolicy: Always
+        name: server
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 2
+        stdin: true
+        tty: true
+        ports:
+        - name: minecraft
+          containerPort: 25565
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /app/ops.json
+          name: ops-pd
+        - mountPath: /app/whitelist.json
+          name: allowlist-pd
+        - mountPath: /app/cache
+          name: cache-pd
+        - mountPath: /app/world
+          name: world-pd
+        - mountPath: /app/world_nether
+          name: world-nether-pd
+        - mountPath: /app/world_the_end
+          name: world-the-end-pd
+      volumes:
+      - name: ops-pd
+        hostPath:
+          path: /mnt/paper/ops.json
+          type: FileOrCreate
+      - name: allowlist-pd
+        hostPath:
+          path: /mnt/paper/whitelist.json
+          type: FileOrCreate
+      - name: cache-pd
+        hostPath:
+          path: /mnt/paper/cache
+          type: DirectoryOrCreate
+      - name: world-pd
+        hostPath:
+          path: /mnt/paper/world
+          type: DirectoryOrCreate
+      - name: world-nether-pd
+        hostPath:
+          path: /mnt/paper/world_nether
+          type: DirectoryOrCreate
+      - name: world-the-end-pd
+        hostPath:
+          path: /mnt/paper/world_the_end
+          type: DirectoryOrCreate
+      nodeSelector:
+        minecraft: "true"
+      tolerations:
+      - key: minecraft
+        operator: Exists
+        effect: NoSchedule
