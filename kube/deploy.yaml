@@ -27,6 +27,9 @@ spec:
         - name: minecraft
           containerPort: 25565
           protocol: TCP
+        - name: rcon
+          containerPort: 25575
+          protocol: TCP
         volumeMounts:
         - mountPath: /app/ops.json
           name: ops-pd
