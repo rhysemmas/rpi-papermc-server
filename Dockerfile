@@ -12,6 +12,7 @@ RUN useradd -ms /bin/bash paper && \
     chown -R paper:paper /app
 
 COPY ./config/* .
+COPY ./plugins ./plugins
 
 USER paper
 

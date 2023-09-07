@@ -14,7 +14,7 @@ spec:
         app: papermc
     spec:
       containers:
-      - image: rhysemmas/papermc:arm32v7
+      - image: rhysemmas/papermc:arm32v7-latest
         imagePullPolicy: Always
         name: server
         resources:
