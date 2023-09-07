@@ -8,11 +8,11 @@ ENV PAPER_BUILD=100
 RUN curl "https://api.papermc.io/v2/projects/paper/versions/${PAPER_VERSION}/builds/${PAPER_BUILD}/downloads/paper-${PAPER_VERSION}-${PAPER_BUILD}.jar" \
     --output "paper.jar"
 
-RUN useradd -ms /bin/bash paper && \
-    chown -R paper:paper /app
-
 COPY ./config/* .
 COPY ./plugins ./plugins
+
+RUN useradd -ms /bin/bash paper && \
+    chown -R paper:paper /app
 
 USER paper
 
